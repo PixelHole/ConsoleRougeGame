@@ -64,6 +64,6 @@
             => a.x == b.x && a.y == b.y;
 
         public static bool operator !=(Vector2Int a, Vector2Int b)
-            => a.x != b.x && a.y != b.y;
+            => a.x != b.x || a.y != b.y;
     }
 }
