@@ -7,12 +7,21 @@ namespace ConsoleGame.Engine.Renderer
 {
     public static class Renderer
     {
-        public static Cell[,] View { get; private set; }
+        public static CellScan[,] View { get; private set; }
         public static Bound ViewBound { get; private set; }
         public static Bound ScreenBound { get; private set; }
         public static int ZLevel { get; private set; }
         public static Vector2Int CellRenderSize { get; private set; } = new Vector2Int(2, 1);
         private static Vector2Int CursorRestPosition = new Vector2Int(0, 10);
+        
+        
+        // Initialization
+        public static void Initialize()
+        {
+            ViewBound = new Bound(Vector2Int.Zero, Vector2Int.One * 15);
+            ZLevel = 2;
+            InitializeView();
+        }
         
         
         // Update View
@@ -23,7 +32,7 @@ namespace ConsoleGame.Engine.Renderer
         }
         public static void UpdateView()
         {
-            Cell[,] newView = SceneManager.CurrentScene.BasicScanArea(ViewBound, ZLevel);
+            CellScan[,] newView = SceneManager.CurrentScene.BasicScanArea(ViewBound, ZLevel);
 
             for (int y = 0; y < ViewBound.Heigth; y++)
             {
@@ -39,7 +48,7 @@ namespace ConsoleGame.Engine.Renderer
         }
         public static void UpdateViewAt(Vector2Int pos)
         {
-            Cell newCell = SceneManager.CurrentScene.BasicScanCellAt(pos, ZLevel);
+            CellScan newCell = SceneManager.CurrentScene.BasicScanCellAt(pos, ZLevel);
 
             if (View[pos.x, pos.y] != newCell)
             {
@@ -50,7 +59,7 @@ namespace ConsoleGame.Engine.Renderer
 
 
         // Drawing
-        public static void DrawArea(Cell[,] scan, Bound bound, bool erase)
+        public static void DrawArea(CellScan[,] scan, Bound bound, bool erase)
         {
             for (int y = 0; y < scan.GetLength(1); y++)
             {
@@ -60,7 +69,7 @@ namespace ConsoleGame.Engine.Renderer
                 }
             }
         }
-        public static void DrawPixel(Cell cell, Vector2Int screenPos, bool erase)
+        public static void DrawPixel(CellScan cell, Vector2Int screenPos, bool erase)
         {
             if (erase) ErasePixel(screenPos);
             
@@ -78,7 +87,7 @@ namespace ConsoleGame.Engine.Renderer
 
             SetCursorPosition(screenPos);
             
-            for (int i = 0; i < CellRenderSize.x; i++)
+            for (int i = 0; i < CellRenderSize.x - 1; i++)
             {
                 Console.Write('\b');
             }
@@ -98,8 +107,8 @@ namespace ConsoleGame.Engine.Renderer
         }
         private static void SetCursorPosition(Vector2Int pos)
         {
-            Console.CursorLeft = pos.x;
-            Console.CursorTop = pos.y;
+            Console.CursorLeft = pos.x * CellRenderSize.x;
+            Console.CursorTop = pos.y * CellRenderSize.y;
         }
 
         

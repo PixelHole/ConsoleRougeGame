@@ -16,8 +16,12 @@ namespace ConsoleGame.Engine.World
         }
 
         public static bool operator ==(Cell a, Cell b)
-            => a.Shape == b.Shape && a.Color == b.Color && a.Walkable == b.Walkable;
+        {
+            return a?.Shape == b?.Shape && a?.Color == b?.Color && a?.Walkable == b?.Walkable;
+        }
         public static bool operator !=(Cell a, Cell b)
-            => a.Shape != b.Shape || a.Color != b.Color || a.Walkable != b.Walkable;
+        {
+            return a?.Shape != b?.Shape || a?.Color != b?.Color || a?.Walkable != b?.Walkable;
+        }
     }
 }

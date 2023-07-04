@@ -39,6 +39,10 @@
         <Reference Include="System.Xml" />
     </ItemGroup>
     <ItemGroup>
+        <Compile Include="Engine\Entities\Components\Component.cs" />
+        <Compile Include="Engine\Entities\Components\HealthComponent.cs" />
+        <Compile Include="Engine\Entities\Components\PlayerControlComponent.cs" />
+        <Compile Include="Engine\Entities\Components\ShapeComponent.cs" />
         <Compile Include="Engine\Entities\Components\Transform.cs" />
         <Compile Include="Engine\Entities\Entity.cs" />
         <Compile Include="Engine\GameManagers\SceneManager.cs" />
@@ -46,6 +50,7 @@
         <Compile Include="Engine\Units\Bound.cs" />
         <Compile Include="Engine\Units\Vector2Int.cs" />
         <Compile Include="Engine\World\Cell.cs" />
+        <Compile Include="Engine\World\CellScan.cs" />
         <Compile Include="Engine\World\Scene.cs" />
         <Compile Include="Program.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />

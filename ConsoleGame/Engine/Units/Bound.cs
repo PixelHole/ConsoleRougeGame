@@ -5,8 +5,8 @@
         public Vector2Int TopLeft { get; private set; }
         public Vector2Int BottomRight { get; private set; }
 
-        public int Width => TopLeft.x - BottomRight.x;
-        public int Heigth => TopLeft.y - BottomRight.y;
+        public int Width => BottomRight.x - TopLeft.x;
+        public int Heigth => BottomRight.y - TopLeft.y;
         public Bound(Vector2Int topLeft, Vector2Int bottomRight)
         {
             TopLeft = topLeft;
