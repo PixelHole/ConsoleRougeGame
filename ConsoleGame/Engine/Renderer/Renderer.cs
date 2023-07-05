@@ -19,7 +19,7 @@ namespace ConsoleGame.Engine.Renderer
         public static void Initialize()
         {
             ViewBound = new Bound(Vector2Int.Zero, Vector2Int.One * 15);
-            ZLevel = 2;
+            ZLevel = 1;
             InitializeView();
         }
         

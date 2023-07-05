@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using ConsoleGame.Engine.Entities;
+using ConsoleGame.Engine.Entities.Instances;
 using ConsoleGame.Engine.World;
+using ConsoleGame.Units;
 
 namespace ConsoleGame.Engine.GameManagers
 {
@@ -49,15 +51,17 @@ namespace ConsoleGame.Engine.GameManagers
                 }
             }
 
-            world[6, 6, 0] = new Cell("0", ConsoleColor.Blue);
+            world[0, 0, 0] = new Cell("0", ConsoleColor.Blue);
             world[6, 6, 1] = new Cell("1", ConsoleColor.Red);
             world[6, 6, 2] = new Cell("2", ConsoleColor.Magenta);
-            
-            Scene scene = new Scene("test", world, new List<Entity>());
 
-            SetCurrentScene("test");
+            Scene scene = new Scene("test", world, new List<Entity>());
             
+            scene.SpawnEntity(new Player(), new Vector2Int(1, 1), 1);
+
             AddScene(scene);
+            
+            SetCurrentScene("test");
         }
     }
 }

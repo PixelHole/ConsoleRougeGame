@@ -39,12 +39,17 @@
         <Reference Include="System.Xml" />
     </ItemGroup>
     <ItemGroup>
+        <Compile Include="Engine\Entities\Components\ControlComponent.cs" />
         <Compile Include="Engine\Entities\Components\Component.cs" />
         <Compile Include="Engine\Entities\Components\HealthComponent.cs" />
         <Compile Include="Engine\Entities\Components\PlayerControlComponent.cs" />
         <Compile Include="Engine\Entities\Components\ShapeComponent.cs" />
         <Compile Include="Engine\Entities\Components\Transform.cs" />
         <Compile Include="Engine\Entities\Entity.cs" />
+        <Compile Include="Engine\Entities\Instances\Creature.cs" />
+        <Compile Include="Engine\Entities\Instances\Player.cs" />
+        <Compile Include="Engine\Exceptions\DuplicateComponentException.cs" />
+        <Compile Include="Engine\GameManagers\GameManager.cs" />
         <Compile Include="Engine\GameManagers\SceneManager.cs" />
         <Compile Include="Engine\Renderer\Renderer.cs" />
         <Compile Include="Engine\Units\Bound.cs" />

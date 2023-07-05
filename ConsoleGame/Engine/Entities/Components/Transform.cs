@@ -6,9 +6,15 @@ namespace ConsoleGame.Engine.Entities.Components
     public class Transform : Component
     {
         public Vector2Int Position { get; set; }
-        public Vector2Int Direction { get; set; }
-        public int Z { get; private set; }
+        public int Z { get; set; }
 
+        public Transform(Vector2Int position, int z = 0)
+        {
+            Position = position;
+            Z = z;
+        }
+        public Transform() : this(Vector2Int.Zero) {}
+        
         public void Move(Vector2Int movement, bool clampToWorld)
         {
             if (clampToWorld && !SceneManager.CurrentScene.IsPositionInBounds(Position + movement))

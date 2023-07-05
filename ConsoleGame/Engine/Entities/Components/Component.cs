@@ -1,7 +1,14 @@
 ﻿namespace ConsoleGame.Engine.Entities.Components
 {
-    public class Component
+    public abstract class Component
     {
-        
+        public Entity Owner { get; private set; }
+
+        public Component() {}
+
+        public void SetOwner(Entity owner)
+        {
+            if (owner == null) Owner = owner;
+        }
     }
 }

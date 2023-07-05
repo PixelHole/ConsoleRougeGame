@@ -10,12 +10,12 @@ namespace ConsoleGame.Engine.World
     public class Scene
     {
         public string Name { get; private set; }
-        public Cell[,,] World { get; private set; }
+        private Cell[,,] World { get; set; }
         public int WorldXSize=> World.GetLength(0);
         public int WorldYSize => World.GetLength(1);
         public int WorldZSize => World.GetLength(2);
         public Vector2Int HorizontalWorldSize => new Vector2Int(WorldXSize, WorldYSize);
-        public List<Entity> Entities { get; private set; } = new List<Entity>();
+        private List<Entity> Entities { get; set; } = new List<Entity>();
 
 
         public Scene(string name, Cell[,,] world, List<Entity> entities)
@@ -43,6 +43,22 @@ namespace ConsoleGame.Engine.World
         }
         
         
+        // Entity Manipulation
+        public void SpawnEntity(Entity entity, Vector2Int position, int z)
+        {
+            if (!IsPositionInBounds(position)) throw new IndexOutOfRangeException();
+
+            entity.Transform.Position = position;
+            entity.Transform.Z = z;
+            
+            Entities.Add(entity);
+        }
+        public void DestroyEntity(Entity entity)
+        {
+            Entities.Remove(entity);
+        }
+
+
         // General scans
         public CellScan[,] BasicScanArea(Bound bounds, int OberserverZ)
         {
@@ -54,6 +70,11 @@ namespace ConsoleGame.Engine.World
             {
                 for (int x = 0; x < bounds.Width; x++)
                 {
+                    if (World[bounds.TopLeft.x + x, bounds.TopLeft.y + y, OberserverZ] != null)
+                    {
+                        scan[x, y] = new CellScan();
+                        continue;
+                    }
                     scan[x, y] = new CellScan(World[bounds.TopLeft.x + x, bounds.TopLeft.y + y, OberserverZ - 1]);
                 }
             }
