@@ -39,6 +39,7 @@
         <Reference Include="System.Xml" />
     </ItemGroup>
     <ItemGroup>
+        <Compile Include="Engine\Entities\Components\CameraFollowComponent.cs" />
         <Compile Include="Engine\Entities\Components\ControlComponent.cs" />
         <Compile Include="Engine\Entities\Components\Component.cs" />
         <Compile Include="Engine\Entities\Components\HealthComponent.cs" />

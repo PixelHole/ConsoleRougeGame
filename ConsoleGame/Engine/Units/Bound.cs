@@ -12,5 +12,11 @@
             TopLeft = topLeft;
             BottomRight = bottomRight;
         }
+
+
+        public static Bound operator +(Bound a, Vector2Int offset)
+        {
+            return new Bound(a.TopLeft + offset, a.BottomRight + offset);
+        }
     }
 }

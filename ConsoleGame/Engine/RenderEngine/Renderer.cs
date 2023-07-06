@@ -7,13 +7,15 @@ namespace ConsoleGame.Engine.RenderEngine
 {
     public static class Renderer
     {
-        public static CellScan[,] View { get; private set; }
+        private static CellScan[,] View { get; set; }
         public static Bound ViewBound { get; private set; }
-        public static Bound ScreenBound { get; private set; }
+        public static Vector2Int ScreenBound { get; private set; } = new Vector2Int(2, 1);
         public static int ZLevel { get; private set; }
         public static Vector2Int CellRenderSize { get; private set; } = new Vector2Int(2, 1);
-        private static Vector2Int CursorRestPosition = new Vector2Int(0, 10);
-        
+        private static Vector2Int CursorRestPosition => new Vector2Int(0, ViewBound.Heigth + 1);
+
+        public delegate void ViewBoundMoveTrigger();
+        public static event ViewBoundMoveTrigger OnViewBoundChange;
         
         // Initialization
         public static void Initialize()
@@ -24,6 +26,23 @@ namespace ConsoleGame.Engine.RenderEngine
         }
         
         
+        // Update View Bounds
+        public static void MoveViewBound(Vector2Int movement)
+        {
+            Bound result = ViewBound + movement;
+            
+            if (!SceneManager.CurrentScene.IsPositionInBounds(result.TopLeft) ||
+                !SceneManager.CurrentScene.IsPositionInBounds(result.BottomRight)) return;
+
+            SetViewBound(result);
+        }
+        public static void SetViewBound(Bound newBound)
+        {
+            OnViewBoundChange?.Invoke();
+            ViewBound = newBound;
+        }
+
+
         // Update View
         public static void InitializeView()
         {
@@ -71,7 +90,7 @@ namespace ConsoleGame.Engine.RenderEngine
         }
         private static void DrawPixel(CellScan cellScan, Vector2Int screenPos, bool erase)
         {
-            SetCursorPosition(screenPos);
+            SetCursorPosition(screenPos + ScreenBound);
             
             SetCursorColor(cellScan.TopColor, cellScan.BottomColor);
             
