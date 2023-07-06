@@ -1,9 +1,9 @@
 ﻿using System;
 using ConsoleGame.Engine.GameManagers;
+using ConsoleGame.Engine.Units;
 using ConsoleGame.Engine.World;
-using ConsoleGame.Units;
 
-namespace ConsoleGame.Engine.Renderer
+namespace ConsoleGame.Engine.RenderEngine
 {
     public static class Renderer
     {
@@ -40,7 +40,7 @@ namespace ConsoleGame.Engine.Renderer
                 {
                     if (View[x, y] != newView[x, y])
                     {
-                        DrawPixel(newView[x, y], IndexToScreenPosition(new Vector2Int(x, y)), true);
+                        DrawPixel(newView[x, y], new Vector2Int(x, y), true);
                         View[x, y] = newView[x, y];
                     }
                 }
@@ -52,14 +52,14 @@ namespace ConsoleGame.Engine.Renderer
 
             if (View[pos.x, pos.y] != newCell)
             {
-                DrawPixel(newCell, IndexToScreenPosition(new Vector2Int(pos.x, pos.y)), true);
+                DrawPixel(newCell, new Vector2Int(pos.x, pos.y), true);
                 View[pos.x, pos.y] = newCell;
             }
         }
 
 
         // Drawing
-        public static void DrawArea(CellScan[,] scan, Bound bound, bool erase)
+        private static void DrawArea(CellScan[,] scan, Bound bound, bool erase)
         {
             for (int y = 0; y < scan.GetLength(1); y++)
             {
@@ -69,41 +69,29 @@ namespace ConsoleGame.Engine.Renderer
                 }
             }
         }
-        public static void DrawPixel(CellScan cell, Vector2Int screenPos, bool erase)
+        private static void DrawPixel(CellScan cellScan, Vector2Int screenPos, bool erase)
         {
-            if (erase) ErasePixel(screenPos);
-            
             SetCursorPosition(screenPos);
             
-            SetCursorColor(cell.Color);
+            SetCursorColor(cellScan.TopColor, cellScan.BottomColor);
             
-            Console.Write(cell.Shape);
+            Console.Write(cellScan.Shape);
             
             RestCursor();
         }
-        public static void ErasePixel(Vector2Int screenPos)
-        {
-            screenPos.x += CellRenderSize.x;
 
-            SetCursorPosition(screenPos);
-            
-            for (int i = 0; i < CellRenderSize.x - 1; i++)
-            {
-                Console.Write('\b');
-            }
-            
-            RestCursor();
-        }
-        
-        
+
         // Cursor Management
-        private static void SetCursorColor(ConsoleColor color)
+        private static void SetCursorColor(ConsoleColor topColor, ConsoleColor bottomColor)
         {
-            Console.ForegroundColor = color;
+            Console.ForegroundColor = topColor;
+            Console.BackgroundColor = bottomColor;
         }
         private static void RestCursor()
         {
             SetCursorPosition(CursorRestPosition);
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.BackgroundColor = ConsoleColor.Black;
         }
         private static void SetCursorPosition(Vector2Int pos)
         {

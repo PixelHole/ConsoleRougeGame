@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using ConsoleGame.Engine.Entities;
 using ConsoleGame.Engine.Entities.Components;
-using ConsoleGame.Units;
+using ConsoleGame.Engine.Units;
 
 namespace ConsoleGame.Engine.World
 {
@@ -57,6 +57,10 @@ namespace ConsoleGame.Engine.World
         {
             Entities.Remove(entity);
         }
+        public List<ControlComponent> GetActiveEntities()
+        {
+            return Entities.Select(entity => entity.GetComponent<ControlComponent>()).OfType<ControlComponent>().ToList();
+        }
 
 
         // General scans
@@ -103,7 +107,7 @@ namespace ConsoleGame.Engine.World
         public List<Entity> GetEntitiesInArea(Bound bounds, int z)
         {
             return Entities.Where(entity =>
-                    entity.Transform.Position <= bounds.BottomRight && entity.Transform.Position >= bounds.TopLeft && 
+                    entity.Transform.Position < bounds.BottomRight && entity.Transform.Position >= bounds.TopLeft && 
                     entity.Transform.Z == z)
                 .ToList();
         }

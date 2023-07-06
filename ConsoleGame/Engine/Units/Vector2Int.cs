@@ -1,4 +1,4 @@
-﻿namespace ConsoleGame.Units
+﻿namespace ConsoleGame.Engine.Units
 {
     public class Vector2Int
     {

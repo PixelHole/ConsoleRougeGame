@@ -1,5 +1,6 @@
 ﻿using ConsoleGame.Engine.GameManagers;
-using ConsoleGame.Units;
+using ConsoleGame.Engine.RenderEngine;
+using ConsoleGame.Engine.Units;
 
 namespace ConsoleGame.Engine.Entities.Components
 {

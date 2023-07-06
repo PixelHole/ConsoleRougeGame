@@ -2,13 +2,13 @@
 {
     public abstract class Component
     {
-        public Entity Owner { get; private set; }
+        public Entity Owner { get; private set; } = null;
 
         public Component() {}
 
         public void SetOwner(Entity owner)
         {
-            if (owner == null) Owner = owner;
+            Owner = owner;
         }
     }
 }

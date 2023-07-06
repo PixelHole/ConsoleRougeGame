@@ -1,6 +1,5 @@
 ﻿using System;
 using ConsoleGame.Engine.GameManagers;
-using ConsoleGame.Engine.Renderer;
 
 namespace ConsoleGame
 {
@@ -8,10 +7,7 @@ namespace ConsoleGame
     {
         public static void Main(string[] args)
         {
-            SceneManager.AddTestScene();
-            Renderer.Initialize();
-
-            Console.ReadKey();
+            GameManager.StartGame();
         }
     }
 }

@@ -2,16 +2,19 @@
 using System.Collections.Generic;
 using ConsoleGame.Engine.Entities;
 using ConsoleGame.Engine.Entities.Instances;
+using ConsoleGame.Engine.Units;
 using ConsoleGame.Engine.World;
-using ConsoleGame.Units;
 
 namespace ConsoleGame.Engine.GameManagers
 {
     public static class SceneManager
     {
-        public static List<Scene> Scenes { get; } = new List<Scene>();
-        public static int CurrentSceneIndex { get; private set; }
+        private static List<Scene> Scenes { get; } = new List<Scene>();
+        private static int CurrentSceneIndex { get; set; } = -1;
         public static Scene CurrentScene => Scenes[CurrentSceneIndex];
+
+        public delegate void SceneChangeTrigger();
+        public static event SceneChangeTrigger OnSceneChange;
 
         public static void AddScene(Scene scene)
         {
@@ -23,7 +26,11 @@ namespace ConsoleGame.Engine.GameManagers
         {
             if (index > Scenes.Count || index < 0) return;
 
+            bool sceneChange = CurrentSceneIndex != index;
+
             CurrentSceneIndex = index;
+            
+            if (sceneChange) OnSceneChange?.Invoke();
         }
         public static void SetCurrentScene(string name)
         {
@@ -51,9 +58,9 @@ namespace ConsoleGame.Engine.GameManagers
                 }
             }
 
-            world[0, 0, 0] = new Cell("0", ConsoleColor.Blue);
-            world[6, 6, 1] = new Cell("1", ConsoleColor.Red);
-            world[6, 6, 2] = new Cell("2", ConsoleColor.Magenta);
+            world[0, 0, 0] = new Cell("0 ", ConsoleColor.Blue);
+            world[6, 6, 1] = new Cell("1 ", ConsoleColor.Red);
+            world[6, 6, 2] = new Cell("2 ", ConsoleColor.Magenta);
 
             Scene scene = new Scene("test", world, new List<Entity>());
             

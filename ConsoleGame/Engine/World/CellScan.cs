@@ -7,7 +7,8 @@ namespace ConsoleGame.Engine.World
     public class CellScan
     {
         public string Shape { get; private set; } = "  ";
-        public ConsoleColor Color { get; private set; } = ConsoleColor.White;
+        public ConsoleColor TopColor { get; private set; } = ConsoleColor.White;
+        public ConsoleColor BottomColor { get; private set; } = ConsoleColor.Black;
 
         public CellScan(Cell cell)
         {
@@ -17,26 +18,32 @@ namespace ConsoleGame.Engine.World
         {
             SetShapeToEntity(entity);
         }
-        public CellScan()
-        {
-            
-        }
+        public CellScan() { }
         public void SetShapeToCell(Cell cell)
         {
             if (cell == null) return;
             Shape = cell.Shape;
-            Color = cell.Color;
+            TopColor = cell.TopColor;
+            BottomColor = cell.BottomColor;
         }
 
         public void SetShapeToEntity(Entity entity)
         {
-            if (entity == null) return;
-            ShapeComponent shapeComponent = entity.GetComponent<ShapeComponent>() as ShapeComponent;
-
-            if (shapeComponent == null) return;
+            if (!(entity?.GetComponent<ShapeComponent>() is ShapeComponent shapeComponent)) return;
 
             Shape = shapeComponent.Shape;
-            Color = shapeComponent.Color;
+            TopColor = shapeComponent.TopColor;
+            BottomColor = shapeComponent.BottomColor;
+        }
+
+
+        public static bool operator ==(CellScan a, CellScan b)
+        {
+            return a?.TopColor == b?.TopColor && a?.BottomColor == b?.BottomColor && a?.Shape == b?.Shape;
+        }
+        public static bool operator !=(CellScan a, CellScan b)
+        {
+            return a?.TopColor != b?.TopColor || a?.BottomColor != b?.BottomColor || a?.Shape != b?.Shape;
         }
     }
 }

@@ -1,14 +1,19 @@
 ﻿using System;
-using ConsoleGame.Units;
+using ConsoleGame.Engine.RenderEngine;
 
 namespace ConsoleGame.Engine.Entities.Components
 {
     public class PlayerControlComponent : ControlComponent
     {
-        protected override void Turn()
+        public override void Turn()
         {
             base.Turn();
             GetPlayerInput();
+        }
+        public override void EndTurn()
+        {
+            base.EndTurn();
+            Renderer.UpdateView();
         }
         private void GetPlayerInput()
         {

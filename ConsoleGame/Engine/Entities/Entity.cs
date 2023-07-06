@@ -17,12 +17,12 @@ namespace ConsoleGame.Engine.Entities
         /// A list of this Entity's Components, the scripts that drive its behavior. Never EVER add to this list
         /// Directly! if you do, make sure to assign the Component's Owner Manually
         /// </summary>
-        private List<Component> Components = new List<Component>(new []{new Transform()});
+        private List<Component> Components = new List<Component>();
         
         /// <summary>
         /// Quick Access to this Entity's Transform Component
         /// </summary>
-        public Transform Transform => GetComponent<Transform>() as Transform;
+        public readonly Transform Transform = new Transform();
 
         protected Entity(string name = "Entity", params Component[] components)
         {
