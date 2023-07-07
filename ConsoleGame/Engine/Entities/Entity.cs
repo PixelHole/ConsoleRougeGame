@@ -66,6 +66,8 @@ namespace ConsoleGame.Engine.Entities
             component.SetOwner(this);
             
             Components.Add(component);
+            
+            component.Initialize();
         }
         
         /// <summary>

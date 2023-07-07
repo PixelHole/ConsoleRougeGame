@@ -9,6 +9,9 @@ namespace ConsoleGame.Engine.Entities.Components
         public Vector2Int Position { get; set; }
         public int Z { get; set; }
 
+        public delegate void MoveTrigger(Vector2Int movement);
+        public event MoveTrigger OnMove;
+
         public Transform(Vector2Int position, int z = 0)
         {
             Position = position;
@@ -27,6 +30,9 @@ namespace ConsoleGame.Engine.Entities.Components
                 
                 return;
             }
+            
+            if (movement != Vector2Int.Zero) OnMove?.Invoke(movement);
+            
             Position += movement;
         }
     }

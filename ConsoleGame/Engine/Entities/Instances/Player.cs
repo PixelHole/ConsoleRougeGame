@@ -7,7 +7,7 @@ namespace ConsoleGame.Engine.Entities.Instances
     {
         public Player(string name = "Player") : base(name, "PL", ConsoleColor.Yellow, 100)
         {
-            AddComponent(new PlayerControlComponent());
+            AddComponents(new PlayerControlComponent(), new CameraFollowComponent());
         }
     }
 }
