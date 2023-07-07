@@ -27,19 +27,22 @@ namespace ConsoleGame.Engine.RenderEngine
         
         
         // Update View Bounds
-        public static void MoveViewBound(Vector2Int movement)
+        public static void MoveViewBound(Vector3Int movement)
         {
-            Bound result = ViewBound + movement;
+            Bound result = ViewBound + (Vector2Int)movement;
+            int zDestination = ZLevel + movement.z;
             
-            if (!SceneManager.CurrentScene.IsPositionInBounds(result.TopLeft) ||
-                !SceneManager.CurrentScene.IsPositionInBounds(result.BottomRight)) return;
+            if (!SceneManager.CurrentScene.IsPositionInBounds((Vector3Int)result.TopLeft) ||
+                !SceneManager.CurrentScene.IsPositionInBounds((Vector3Int)result.BottomRight) ||
+                !SceneManager.CurrentScene.IsZInBounds(zDestination)) return;
 
-            SetViewBound(result);
+            SetViewBound(result, zDestination);
         }
-        public static void SetViewBound(Bound newBound)
+        public static void SetViewBound(Bound newBound, int newZ)
         {
             OnViewBoundChange?.Invoke();
             ViewBound = newBound;
+            ZLevel = newZ;
         }
 
 
@@ -67,7 +70,7 @@ namespace ConsoleGame.Engine.RenderEngine
         }
         public static void UpdateViewAt(Vector2Int pos)
         {
-            CellScan newCell = SceneManager.CurrentScene.BasicScanCellAt(pos, ZLevel);
+            CellScan newCell = SceneManager.CurrentScene.BasicScanCellAt(new Vector3Int(pos.x, pos.y, ZLevel));
 
             if (View[pos.x, pos.y] != newCell)
             {

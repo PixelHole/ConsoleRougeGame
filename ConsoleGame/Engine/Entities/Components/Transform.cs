@@ -6,34 +6,43 @@ namespace ConsoleGame.Engine.Entities.Components
 {
     public class Transform : Component
     {
-        public Vector2Int Position { get; set; }
-        public int Z { get; set; }
+        public Vector3Int Position { get; set; }
 
-        public delegate void MoveTrigger(Vector2Int movement);
+        public delegate void MoveTrigger(Vector3Int movement);
         public event MoveTrigger OnMove;
 
-        public Transform(Vector2Int position, int z = 0)
+        public Transform(Vector3Int position)
         {
             Position = position;
-            Z = z;
         }
-        public Transform() : this(Vector2Int.Zero) {}
+        public Transform() : this(Vector3Int.Zero) {}
         
-        public void Move(Vector2Int movement, bool clampToWorld)
+        public void Move(Vector3Int movement, bool clampToWorld)
         {
-            if (clampToWorld && !SceneManager.CurrentScene.IsPositionInBounds(Position + movement))
-            {
-                Vector2Int worldSize = SceneManager.CurrentScene.HorizontalWorldSize;
+            Vector3Int destination = Position + movement;
 
-                if (Position.x + movement.x > worldSize.x) Position.x = worldSize.x - 1;
-                if (Position.y + movement.y > worldSize.y) Position.y = worldSize.y - 1;
-                
+            // world bound check
+            if (clampToWorld &&
+                !SceneManager.CurrentScene.IsPositionInBounds(destination))
                 return;
+            
+            // world collision check
+            if (!SceneManager.CurrentScene.CanMoveToCell(destination))
+            {
+                // Climbing
+                if (SceneManager.CurrentScene.CanClimbCell(destination) &&
+                    SceneManager.CurrentScene.IsZInBounds(destination.z + 1))
+                {
+                    destination.z++;
+                    movement.z++;
+                }
+                
             }
+
+            // event invoking
+            if (movement != Vector3Int.Zero) OnMove?.Invoke(movement);
             
-            if (movement != Vector2Int.Zero) OnMove?.Invoke(movement);
-            
-            Position += movement;
+            Position = destination;
         }
     }
 }

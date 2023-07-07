@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using ConsoleGame.Engine.Entities;
 using ConsoleGame.Engine.Entities.Components;
+using ConsoleGame.Engine.RenderEngine;
 using ConsoleGame.Engine.Units;
 
 namespace ConsoleGame.Engine.World
@@ -44,12 +45,11 @@ namespace ConsoleGame.Engine.World
         
         
         // Entity Manipulation
-        public void SpawnEntity(Entity entity, Vector2Int position, int z)
+        public void SpawnEntity(Entity entity, Vector3Int position)
         {
             if (!IsPositionInBounds(position)) throw new IndexOutOfRangeException();
 
             entity.Transform.Position = position;
-            entity.Transform.Z = z;
             
             Entities.Add(entity);
         }
@@ -85,18 +85,18 @@ namespace ConsoleGame.Engine.World
 
             foreach (var entity in GetEntitiesInArea(bounds, OberserverZ))
             {
-                Vector2Int indexPos = entity.Transform.Position - bounds.TopLeft;
+                Vector2Int indexPos = (Vector2Int)entity.Transform.Position - bounds.TopLeft;
                 scan[indexPos.x, indexPos.y].SetShapeToEntity(entity);
             }
 
             return scan;
         }
-        public CellScan BasicScanCellAt(Vector2Int pos, int z)
+        public CellScan BasicScanCellAt(Vector3Int pos)
         {
-            Entity entity = GetEntityAt(pos, z);
+            Entity entity = GetEntityAt(pos);
             if (entity == null)
             {
-                return new CellScan(World[pos.x, pos.y, z - 1]);
+                return new CellScan(World[pos.x, pos.y, pos.z - 1]);
             }
 
             return new CellScan(entity);
@@ -107,18 +107,33 @@ namespace ConsoleGame.Engine.World
         public List<Entity> GetEntitiesInArea(Bound bounds, int z)
         {
             return Entities.Where(entity =>
-                    entity.Transform.Position < bounds.BottomRight && entity.Transform.Position >= bounds.TopLeft && 
-                    entity.Transform.Z == z)
+                    (Vector2Int)entity.Transform.Position < bounds.BottomRight &&
+                    (Vector2Int)entity.Transform.Position >= bounds.TopLeft && 
+                    entity.Transform.Position.z == z)
                 .ToList();
         }
-        public Entity GetEntityAt(Vector2Int pos, int z)
+        public Entity GetEntityAt(Vector3Int pos)
         {
-            return Entities.Find(entity => entity.Transform.Position == pos && entity.Transform.Z == z);
+            return Entities.Find(entity => entity.Transform.Position == pos);
         }
         
         
         // Checks
-        public bool IsPositionInBounds(Vector2Int pos)
-            => pos > Vector2Int.MinusOne && pos < HorizontalWorldSize;
+        public bool IsZInBounds(int z) => z > 0 && z < WorldZSize;
+        public bool IsPositionInBounds(Vector3Int pos)
+            => pos > Vector3Int.MinusOne && (Vector2Int)pos < HorizontalWorldSize;
+        public bool CanMoveToCell(Vector3Int pos)
+        {
+            if (!IsPositionInBounds(pos)) return false;
+
+            return World[pos.x, pos.y, pos.z - 1] != null && World[pos.x, pos.y, pos.z] == null &&
+                   World[pos.x, pos.y, pos.z - 1].Walkable;
+        }
+        public bool CanClimbCell(Vector3Int pos)
+        {
+            if (!IsPositionInBounds(pos)) return false;
+
+            return World[pos.x, pos.y, pos.z] != null && World[pos.x, pos.y, pos.z].Climbable;
+        }
     }
 }

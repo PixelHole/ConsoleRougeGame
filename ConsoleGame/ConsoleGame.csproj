@@ -52,12 +52,12 @@
         <Compile Include="Engine\Exceptions\DuplicateComponentException.cs" />
         <Compile Include="Engine\GameManagers\GameManager.cs" />
         <Compile Include="Engine\GameManagers\SceneManager.cs" />
+        <Compile Include="Engine\RenderEngine\CellScan.cs" />
         <Compile Include="Engine\RenderEngine\Renderer.cs" />
         <Compile Include="Engine\Units\Bound.cs" />
         <Compile Include="Engine\Units\Vector2Int.cs" />
         <Compile Include="Engine\Units\Vector3Int.cs" />
         <Compile Include="Engine\World\Cell.cs" />
-        <Compile Include="Engine\World\CellScan.cs" />
         <Compile Include="Engine\World\Scene.cs" />
         <Compile Include="Program.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />

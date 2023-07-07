@@ -1,8 +1,9 @@
 ﻿using System;
 using ConsoleGame.Engine.Entities;
 using ConsoleGame.Engine.Entities.Components;
+using ConsoleGame.Engine.World;
 
-namespace ConsoleGame.Engine.World
+namespace ConsoleGame.Engine.RenderEngine
 {
     public class CellScan
     {
@@ -10,6 +11,7 @@ namespace ConsoleGame.Engine.World
         public ConsoleColor TopColor { get; private set; } = ConsoleColor.White;
         public ConsoleColor BottomColor { get; private set; } = ConsoleColor.Black;
 
+        
         public CellScan(Cell cell)
         {
             SetShapeToCell(cell);
@@ -19,6 +21,8 @@ namespace ConsoleGame.Engine.World
             SetShapeToEntity(entity);
         }
         public CellScan() { }
+        
+        
         public void SetShapeToCell(Cell cell)
         {
             if (cell == null) return;
@@ -26,7 +30,6 @@ namespace ConsoleGame.Engine.World
             TopColor = cell.TopColor;
             BottomColor = cell.BottomColor;
         }
-
         public void SetShapeToEntity(Entity entity)
         {
             if (!(entity?.GetComponent<ShapeComponent>() is ShapeComponent shapeComponent)) return;

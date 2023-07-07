@@ -18,14 +18,15 @@ namespace ConsoleGame.Engine.Entities.Components
         {
             OnTurnEnd?.Invoke();
         }
-        protected virtual void Move(Vector2Int movement)
+        protected virtual void Move(Vector3Int movement)
         {
             Owner.Transform.Move(movement, true);
         }
         
-        protected virtual void MoveLeft(int distance = 1) => Move(Vector2Int.Left * distance);
-        protected virtual void MoveRight(int distance = 1) => Move(Vector2Int.Right * distance);
-        protected virtual void MoveUp(int distance = 1) => Move(Vector2Int.Down * distance);
-        protected virtual void MoveDown(int distance = 1) => Move(Vector2Int.Up * distance);
+        protected virtual void MoveLeft(int distance = 1) => Move(Vector3Int.Left * distance);
+        protected virtual void MoveRight(int distance = 1) => Move(Vector3Int.Right * distance);
+        protected virtual void MoveUp(int distance = 1) => Move(Vector3Int.Down * distance);
+        protected virtual void MoveDown(int distance = 1) => Move(Vector3Int.Up * distance);
+        protected virtual void Climb(int distance = 1) => Move(Vector3Int.Forward);
     }
 }

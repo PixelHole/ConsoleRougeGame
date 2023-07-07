@@ -64,7 +64,7 @@ namespace ConsoleGame.Engine.GameManagers
 
             Scene scene = new Scene("test", world, new List<Entity>());
             
-            scene.SpawnEntity(new Player(), new Vector2Int(1, 1), 1);
+            scene.SpawnEntity(new Player(), new Vector3Int(1, 1, 1));
 
             AddScene(scene);
             
